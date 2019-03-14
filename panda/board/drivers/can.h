@@ -428,6 +428,22 @@ void can_rx(uint8_t can_number) {
         to_send.RDLR = to_push.RDLR;
         to_send.RDHR = to_push.RDHR;
         can_send(&to_send, bus_fwd_num);
+      } else if (bus_fwd_num == 99){
+        // Send the messgae to CAN 1
+        CAN_FIFOMailBox_TypeDef to_send1;
+        to_send1.RIR = to_push.RIR | 1; // TXRQ
+        to_send1.RDTR = to_push.RDTR;
+        to_send1.RDLR = to_push.RDLR;
+        to_send1.RDHR = to_push.RDHR;
+        can_send(&to_send1, 1);
+        
+        // Send the messgae to CAN 2
+        CAN_FIFOMailBox_TypeDef to_send2;
+        to_send2.RIR = to_push.RIR | 1; // TXRQ
+        to_send2.RDTR = to_push.RDTR;
+        to_send2.RDLR = to_push.RDLR;
+        to_send2.RDHR = to_push.RDHR;
+        can_send2(&to_send2, 2);
       }
     #endif
 
